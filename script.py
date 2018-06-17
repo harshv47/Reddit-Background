@@ -4,10 +4,18 @@ import ctypes
 import sys
 import random
 
+
 def printHelp():
         print('--------------------------------------------------------------------')
         print('Help Section:')
-        print('Proper Usage:')
+        print('Proper Usage: python script.py <arguments>')
+        print('\t[-limit] [-help] [change_to] [random]')
+        print(' \t-limit <int> :\tChanges the limit to the number upto which posts of each subreddit is checked. The default is 100.\n
+                \t-help :\tDisplays this Section.\n
+                \tchange_to <int between 1 and limit (default = 100)> :\tChanges the backgroud to that rank if arranged on the basis of upvotes.\n
+                \trandom :\tChanges the background to a random image from the select pool upto limit.\n
+                
+              ')
 
 def ChangeBack(lim , proirind):
         print('Getting Reddit Data...')
@@ -17,19 +25,21 @@ def ChangeBack(lim , proirind):
                              username='ultramarinebot',
                              password='DingDong')
 
-        subreddit = reddit.subreddit('EarthPorn')
+        
         
         walllist = []
         wallups = []    
-
+        wallsubs = ['EarthPorn', 'SpacePorn']
         
-        for submission in subreddit.hot(limit = lim):
-                if not submission.stickied:
-                        upvotes = submission.ups
-                        wallups.append(upvotes)
-                        walllist.append(upvotes)
-                        walllist.append(submission.url)
-                        walllist.append(submission.title+'.'+submission.url.split('.')[-1])
+        for wallsub in wallsubs:
+              subreddit = reddit.subreddit(walsub)
+              for submission in subreddit.hot(limit = lim):          
+                        if not submission.stickied:
+                                upvotes = submission.ups
+                                wallups.append(upvotes)
+                                walllist.append(upvotes)
+                                walllist.append(submission.url)
+                                walllist.append(submission.title+'.'+submission.url.split('.')[-1])
             
                
         proirind = -proirind
@@ -45,7 +55,7 @@ def ChangeBack(lim , proirind):
 
         
         SPI_SETDESKWALLPAPER = 20
-        name = "E:\\My\\Projects\\Reddit-Background\\temp."
+        name = os.getcwd() + "\\temp."
         name += urltemp.split('.')[-1]
         print('Downloading...', walllist[chkind+2])
         urllib.request.urlretrieve(urltemp,filename = 'temp.' + urltemp.split('.')[-1])
@@ -80,6 +90,7 @@ if __name__ == "__main__":
                         
                 if argument == 'random':
                         temp_proirind = random.randrange(1, temp_limit, 1)
+                #Will add the option to add multis and subreddits
         
         ChangeBack(temp_limit, temp_proirind)
 
