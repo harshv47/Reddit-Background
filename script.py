@@ -3,6 +3,7 @@ import urllib.request
 import ctypes
 import sys
 import random
+import os
 
 
 def printHelp():
@@ -10,12 +11,14 @@ def printHelp():
         print('Help Section:')
         print('Proper Usage: python script.py <arguments>')
         print('\t[-limit] [-help] [change_to] [random]')
-        print(' \t-limit <int> :\tChanges the limit to the number upto which posts of each subreddit is checked. The default is 100.\n
-                \t-help :\tDisplays this Section.\n
-                \tchange_to <int between 1 and limit (default = 100)> :\tChanges the backgroud to that rank if arranged on the basis of upvotes.\n
-                \trandom :\tChanges the background to a random image from the select pool upto limit.\n
-              ')
+        print(' -limit <int> :\tChanges the limit to the number upto which posts of each subreddit is checked. The default is 100.')
+        print(' -help :\tDisplays this Section.')
+        print(' change_to <int between 1 and limit (default = 100)> :\tChanges the backgroud to that rank if arranged on the basis of upvotes.')
+        print(' random :\tChanges the background to a random image from the select pool upto limit.')
 
+        print('\n\n\tIn case of conflicts the latter one will supercede the former.')
+        
+        
 def ChangeBack(lim , proirind):
         print('Getting Reddit Data...')
         reddit = praw.Reddit(client_id='m8WwEuPMiFFK2Q',
@@ -31,7 +34,7 @@ def ChangeBack(lim , proirind):
         wallsubs = ['EarthPorn', 'SpacePorn']
         
         for wallsub in wallsubs:
-              subreddit = reddit.subreddit(walsub)
+              subreddit = reddit.subreddit(wallsub)
               for submission in subreddit.hot(limit = lim):          
                         if not submission.stickied:
                                 upvotes = submission.ups
@@ -54,12 +57,13 @@ def ChangeBack(lim , proirind):
 
         
         SPI_SETDESKWALLPAPER = 20
+        SPIF_UPDATEINFILE = 1
         name = os.getcwd() + "\\temp."
         name += urltemp.split('.')[-1]
         print('Downloading...', walllist[chkind+2])
         urllib.request.urlretrieve(urltemp,filename = 'temp.' + urltemp.split('.')[-1])
         print('Download Complete.\nSetting this as Wallpaper...')
-        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, name , 0)
+        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, name , SPIF_UPDATEINFILE)
         print('Wallpaper Set.')
 
         
