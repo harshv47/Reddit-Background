@@ -2,7 +2,7 @@
 
 The purpose of this project is to create a Python script to set desktop backgrounds from images downloaded from Reddit.
 
-##There are two scripts:
+## There are two scripts:
 
 The 'script.py' is the advanced version with controls.
 
