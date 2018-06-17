@@ -14,7 +14,6 @@ def printHelp():
                 \t-help :\tDisplays this Section.\n
                 \tchange_to <int between 1 and limit (default = 100)> :\tChanges the backgroud to that rank if arranged on the basis of upvotes.\n
                 \trandom :\tChanges the background to a random image from the select pool upto limit.\n
-                
               ')
 
 def ChangeBack(lim , proirind):
