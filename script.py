@@ -76,7 +76,7 @@ if __name__ == "__main__":
         temp_proirind = 1
         arg_counter = -1
         if len(sys.argv) < 2:
-                print('Please provide proper argument(s). Use -help to see the list of Arguments.')
+                print('Please provide proper argument(s). Use -help to see the list of Arguments. Defaulting to the highest upvoted post.')
                 
         for argument in sys.argv:
                 arg_counter += 1
