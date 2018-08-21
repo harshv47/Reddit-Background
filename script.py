@@ -24,8 +24,8 @@ def ChangeBack(lim , proirind):
         reddit = praw.Reddit(client_id='m8WwEuPMiFFK2Q',
                              client_secret='N01fSGdUzH-m6RgHW3-u0GHUXSY',
                              user_agent='reddit_back',
-                             username='ultramarinebot',
-                             password='DingDong')
+                             username='botname',
+                             password='pass')
 
         
         
