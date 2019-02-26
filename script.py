@@ -19,15 +19,16 @@ def printHelp():
         print('\n\n\tIn case of conflicts the latter one will supercede the former.')
         
         
-def ChangeBack(lim , proirind):
-        print('Getting Reddit Data...')
-        reddit = praw.Reddit(client_id='m8WwEuPMiFFK2Q',
-                             client_secret='N01fSGdUzH-m6RgHW3-u0GHUXSY',
+def setUp(usrnm, passwd, cl_id, cl_sc):
+	print('Getting Reddit Data...')
+        reddit = praw.Reddit(client_id=cl_id,
+                             client_secret=cl_sc,
                              user_agent='reddit_back',
-                             username='botname',
-                             password='pass')
+                             username=usrnm,
+                             password=passwd)
 
-        
+        return reddit
+def ChangeBack(lim , proirind):
         
         walllist = []
         wallups = []    
@@ -55,14 +56,16 @@ def ChangeBack(lim , proirind):
                         break
 
 
-        
+        #	Downloading the file
+        print('Downloading...', walllist[chkind+2])
+        urllib.request.urlretrieve(urltemp,filename = 'temp.' + urltemp.split('.')[-1])
+        print('Download Complete.\nSetting this as Wallpaper...')
+
+        #	This part adds back ground support for windows machines
         SPI_SETDESKWALLPAPER = 20
         SPIF_UPDATEINFILE = 1
         name = os.getcwd() + "\\temp."
         name += urltemp.split('.')[-1]
-        print('Downloading...', walllist[chkind+2])
-        urllib.request.urlretrieve(urltemp,filename = 'temp.' + urltemp.split('.')[-1])
-        print('Download Complete.\nSetting this as Wallpaper...')
         ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, name , SPIF_UPDATEINFILE)
         print('Wallpaper Set.')
 
@@ -93,8 +96,9 @@ if __name__ == "__main__":
                         
                 if argument == 'random':
                         temp_proirind = random.randrange(1, temp_limit, 1)
-                #Will add the option to add multis and subreddits
+                #Will add the option to add multis and subreddtis
         
+        setUp()
         ChangeBack(temp_limit, temp_proirind)
 
 
