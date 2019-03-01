@@ -61,7 +61,7 @@ def ChangeBack(lim , proirind):
         urllib.request.urlretrieve(urltemp,filename = 'temp.' + urltemp.split('.')[-1])
         print('Download Complete.\nSetting this as Wallpaper...')
 
-        #	This part adds back ground support for windows machines
+        #	This part adds back ground support for Windows machines
         SPI_SETDESKWALLPAPER = 20
         SPIF_UPDATEINFILE = 1
         name = os.getcwd() + "\\temp."

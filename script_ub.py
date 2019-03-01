@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
+
 import praw
-import urllib.request
+import urllib
 import ctypes
 import sys
 import random
@@ -40,12 +42,13 @@ def nameCorrector(name):
             name[i] = '-'
     return name
 
+#   Added so that wallsubs can be updated 
+wallsubs = ['EarthPorn', 'SpacePorn']
 
-def ChangeBack(lim , proirind):
+def ChangeBack(lim , proirind, reddit):
         
         walllist = []
         wallups = []    
-        wallsubs = ['EarthPorn', 'SpacePorn']
         
         for wallsub in wallsubs:
               subreddit = reddit.subreddit(wallsub)
@@ -72,14 +75,18 @@ def ChangeBack(lim , proirind):
         name = walllist[chkind+2]
         name = nameCorrector(name)
         #	Downloading the file
-        print('Downloading...', walllist[chkind+2])
-        urllib.request.urlretrieve(urltemp,filename = 'name')
+        print('Downloading... ' + name)
+        file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+        urllib.urlretrieve(urltemp,filename = (file_path + name))
         print('Download Complete.\nSetting this as Wallpaper...')
 
-        #	This part adds back ground support for ubuntu_gnome machines
-        file_path = '/usr/share/backgrounds/' + name
-        status, output = commands.getstatusoutput(gconftool-2 --set /desktop/gnome/background/picture_filename --type string name)  # status=0 if success
-
+        #	This part adds background support for ubuntu_gnome machines
+        command = 'gsettings set org.gnome.desktop.background picture-uri file://' + file_path + '\"' + name+ '\"'
+        status, output = commands.getstatusoutput(command)
+        if status == 0:
+            print('Wallpaper Set')
+        else:
+            print('Some error occured. Please Try Again; if the issue persists, pray')
         
         
 
@@ -109,7 +116,7 @@ if __name__ == "__main__":
                         temp_proirind = random.randrange(1, temp_limit, 1)
                 #Will add the option to add multis and subreddits
         
-        setUp()
-        ChangeBack(temp_limit, temp_proirind)
+        reddit = setUp('ultramarinebot', 'DingDong', 'm8WwEuPMiFFK2Q', 'N01fSGdUzH-m6RgHW3-u0GHUXSY')
+        ChangeBack(temp_limit, temp_proirind, reddit)
 
 
