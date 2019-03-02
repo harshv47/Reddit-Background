@@ -25,7 +25,7 @@ def setUp(usrnm, passwd, cl_id, cl_sc):
 
 	return reddit
 
-def nameCorrectorUbuntu(name):
+def nameCorrectorLinux(name):
 	#   Corrects file name in line with ubuntu file naming rules
 	if len(name) > 255:
 		name = name[0:254]
@@ -85,7 +85,7 @@ def changeBack(lim , proirind, reddit):
 	#   Checking for target machine to be a ubuntu desktop
 	if os.environ.get("DESKTOP_SESSION") in ["ubuntu", "gnome", "unity"]:
 		#   Correcting the file names
-		name = nameCorrectorUbuntu(name)
+		name = nameCorrectorLinux(name)
 
 		#   Downloading the file
 		print('Downloading... ' + name)
@@ -103,7 +103,9 @@ def changeBack(lim , proirind, reddit):
 
 	#   Checking for target machine to be a Windows desktop
 	if sys.platform in ["win32", "cygwin"]:
-		
+		#   Correcting the file names
+		name = nameCorrectorWindows(name)
+
 		#   Downloading the file
 		print('Downloading...', name)
 		file_path = os.path.expanduser('~\\Pictures') +'\\Wallpapers\\'
@@ -119,6 +121,10 @@ def changeBack(lim , proirind, reddit):
 
 	#   Checking for target machine to be Mate
 	if os.environ.get("DESKTOP_SESSION") == "mate":
+		#   Correcting the file names
+		name = nameCorrectorLinux(name)
+
+		#	Downloading th file
 		print('Downloading... ' + name)
 		file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
 		urllib.urlretrieve(urltemp,filename = (file_path + name))
