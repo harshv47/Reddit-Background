@@ -97,6 +97,14 @@ def changeBack(lim , proirind, reddit):
 	        urllib.urlretrieve(urltemp,filename = (file_path + name))
 	        print('Download Complete.\nSetting this as Wallpaper...')
 
+	        #	This part adds background support for ubuntu machines
+	        command = 'gsettings set org.gnome.desktop.background picture-uri file://' + file_path + '\"' + name+ '\"'
+	        status, output = commands.getstatusoutput(command)
+	        if status == 0:
+	            print('Wallpaper Set')
+	        else:
+	            print('Some error occured. Please Try Again; if the issue persists, pray')
+
 	    #	Checking for target machine to be a Windows desktop
 	    if sys.platform in ["win32", "cygwin"]:
 	        
