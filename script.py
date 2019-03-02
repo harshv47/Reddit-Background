@@ -20,7 +20,7 @@ def printHelp():
         
         
 def setUp(usrnm, passwd, cl_id, cl_sc):
-	print('Getting Reddit Data...')
+    print('Getting Reddit Data...')
         reddit = praw.Reddit(client_id=cl_id,
                              client_secret=cl_sc,
                              user_agent='reddit_back',
@@ -39,22 +39,22 @@ def nameCorrectorUbuntu(name):
     return name
 
 def nameCorrectorWindows(name):
-	#	Corrects file name in line with Windows file naming rules
-	if len(name) > 255:
-		name = name[0:254]
-	for i in range(0, len(name)-1):
-		if name[i] == '/' || name[i] == '\\':
+    #   Corrects file name in line with Windows file naming rules
+    if len(name) > 255:
+        name = name[0:254]
+    for i in range(0, len(name)-1):
+        if name[i] == '/' || name[i] == '\\':
             name[i] = '-'
         if name[i] == '<':
-        	name[i] = '['
+            name[i] = '['
         if name[i] == '>':
-        	name[i] = ']'
+            name[i] = ']'
         if name[i] in [':', '|', '?']:
-        	name[i] = '_'
+            name[i] = '_'1
         if name[i] == '\"':
-        	name[i] = '\''
-       	if name[i] == '*':
-       		name[i] = 'x'
+            name[i] = '\''
+        if name[i] == '*':
+            name[i] = 'x'
     return name
 
 def changeBack(lim , proirind, reddit):
@@ -86,41 +86,57 @@ def changeBack(lim , proirind, reddit):
 
         name = walllist[chkind+2]
 
-        #	Checking for target machine to be a ubuntu desktop
+        #   Checking for target machine to be a ubuntu desktop
         if os.environ.get("DESKTOP_SESSION") in ["ubuntu", "gnome", "unity"]:
-	        #	Correcting the file names
-	        name = nameCorrectorUbuntu(name)
+            #   Correcting the file names
+            name = nameCorrectorUbuntu(name)
 
-	        #	Downloading the file
-	        print('Downloading... ' + name)
-	        file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
-	        urllib.urlretrieve(urltemp,filename = (file_path + name))
-	        print('Download Complete.\nSetting this as Wallpaper...')
+            #   Downloading the file
+            print('Downloading... ' + name)
+            file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+            urllib.urlretrieve(urltemp,filename = (file_path + name))
+            print('Download Complete.\nSetting this as Wallpaper...')
 
-	        #	This part adds background support for ubuntu machines
-	        command = 'gsettings set org.gnome.desktop.background picture-uri file://' + file_path + '\"' + name+ '\"'
-	        status, output = commands.getstatusoutput(command)
-	        if status == 0:
-	            print('Wallpaper Set')
-	        else:
-	            print('Some error occured. Please Try Again; if the issue persists, pray')
+            #   This part adds background support for ubuntu machines
+            command = 'gsettings set org.gnome.desktop.background picture-uri file://' + file_path + '\"' + name+ '\"'
+            status, output = commands.getstatusoutput(command)
+            if status == 0:
+                print('Wallpaper Set')
+            else:
+                print('Some error occured. Please Try Again; if the issue persists, pray')
 
-	    #	Checking for target machine to be a Windows desktop
-	    if sys.platform in ["win32", "cygwin"]:
-	        
-	        #	Downloading the file
-	        print('Downloading...', name)
-	        file_path = os.path.expanduser('~\\Pictures') +'\\Wallpapers\\'
-	        urllib.urlretrieve(urltemp,filename = (file_path + name))
-	        print('Download Complete.\nSetting this as Wallpaper...')
+        #   Checking for target machine to be a Windows desktop
+        if sys.platform in ["win32", "cygwin"]:
+            
+            #   Downloading the file
+            print('Downloading...', name)
+            file_path = os.path.expanduser('~\\Pictures') +'\\Wallpapers\\'
+            urllib.urlretrieve(urltemp,filename = (file_path + name))
+            print('Download Complete.\nSetting this as Wallpaper...')
 
-	        #	This part adds back ground support for Windows machines
-	        SPI_SETDESKWALLPAPER = 20
-	        SPIF_UPDATEINFILE = 1
-	        command = file_path + '\"' + name+ '\"'
-	        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, command , SPIF_UPDATEINFILE)
-	        print('Wallpaper Set.')
+            #   This part adds back ground support for Windows machines
+            SPI_SETDESKWALLPAPER = 20
+            SPIF_UPDATEINFILE = 1
+            command = file_path + '\"' + name+ '\"'
+            ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, command , SPIF_UPDATEINFILE)
+            print('Wallpaper Set.')
 
+        #   Checking for target machine to be Mate
+        if os.environ.get("DESKTOP_SESSION") == "mate":
+        print('Downloading... ' + name)
+            file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+            urllib.urlretrieve(urltemp,filename = (file_path + name))
+            print('Download Complete.\nSetting this as Wallpaper...')
+
+            #   This part adds background support for Mate machines
+            file_path += '\"' + name+ '\"'
+            PIC=$(ls file_path | shuf -n1)
+            command = 'mateconftool-2 -t string -s /desktop/mate/background/picture_filename $PIC'
+            status, output = commands.getstatusoutput(command)
+            if status == 0:
+                print('Wallpaper Set')
+            else:
+                print('Some error occured. Please Try Again; if the issue persists, pray')    
         
         
 
