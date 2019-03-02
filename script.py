@@ -28,7 +28,36 @@ def setUp(usrnm, passwd, cl_id, cl_sc):
                              password=passwd)
 
         return reddit
-def ChangeBack(lim , proirind):
+
+def nameCorrectorUbuntu(name):
+    #   Corrects file name in line with ubuntu file naming rules
+    if len(name) > 255:
+        name = name[0:254]
+    for i in range(0,length-1):
+        if name[i] == '/':
+            name[i] = '-'
+    return name
+
+def nameCorrectorWindows(name):
+	#	Corrects file name in line with Windows file naming rules
+	if len(name) > 255:
+		name = name[0:254]
+	for i in range(0, len(name)-1):
+		if name[i] == '/' || name[i] == '\\':
+            name[i] = '-'
+        if name[i] == '<':
+        	name[i] = '['
+        if name[i] == '>':
+        	name[i] = ']'
+        if name[i] in [':', '|', '?']:
+        	name[i] = '_'
+        if name[i] == '\"':
+        	name[i] = '\''
+       	if name[i] == '*':
+       		name[i] = 'x'
+    return name
+
+def changeBack(lim , proirind, reddit):
         
         walllist = []
         wallups = []    
@@ -55,19 +84,34 @@ def ChangeBack(lim , proirind):
                         urltemp = walllist[chkind+1]
                         break
 
+        name = walllist[chkind+2]
 
-        #	Downloading the file
-        print('Downloading...', walllist[chkind+2])
-        urllib.request.urlretrieve(urltemp,filename = 'temp.' + urltemp.split('.')[-1])
-        print('Download Complete.\nSetting this as Wallpaper...')
+        #	Checking for target machine to be a ubuntu desktop
+        if os.environ.get("DESKTOP_SESSION") in ["ubuntu", "gnome", "unity"]:
+	        #	Correcting the file names
+	        name = nameCorrectorUbuntu(name)
 
-        #	This part adds back ground support for Windows machines
-        SPI_SETDESKWALLPAPER = 20
-        SPIF_UPDATEINFILE = 1
-        name = os.getcwd() + "\\temp."
-        name += urltemp.split('.')[-1]
-        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, name , SPIF_UPDATEINFILE)
-        print('Wallpaper Set.')
+	        #	Downloading the file
+	        print('Downloading... ' + name)
+	        file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+	        urllib.urlretrieve(urltemp,filename = (file_path + name))
+	        print('Download Complete.\nSetting this as Wallpaper...')
+
+	    #	Checking for target machine to be a Windows desktop
+	    if sys.platform in ["win32", "cygwin"]:
+	        
+	        #	Downloading the file
+	        print('Downloading...', name)
+	        file_path = os.path.expanduser('~\\Pictures') +'\\Wallpapers\\'
+	        urllib.urlretrieve(urltemp,filename = (file_path + name))
+	        print('Download Complete.\nSetting this as Wallpaper...')
+
+	        #	This part adds back ground support for Windows machines
+	        SPI_SETDESKWALLPAPER = 20
+	        SPIF_UPDATEINFILE = 1
+	        command = file_path + '\"' + name+ '\"'
+	        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, command , SPIF_UPDATEINFILE)
+	        print('Wallpaper Set.')
 
         
         
@@ -98,7 +142,7 @@ if __name__ == "__main__":
                         temp_proirind = random.randrange(1, temp_limit, 1)
                 #Will add the option to add multis and subreddtis
         
-        setUp()
-        ChangeBack(temp_limit, temp_proirind)
+        reddit = setUp('ultramarinebot', 'DingDong', 'm8WwEuPMiFFK2Q', 'N01fSGdUzH-m6RgHW3-u0GHUXSY')
+        changeBack(temp_limit, temp_proirind, reddit)
 
 

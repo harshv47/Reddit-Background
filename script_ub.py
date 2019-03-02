@@ -45,7 +45,7 @@ def nameCorrector(name):
 #   Added so that wallsubs can be updated 
 wallsubs = ['EarthPorn', 'SpacePorn']
 
-def ChangeBack(lim , proirind, reddit):
+def changeBack(lim , proirind, reddit):
         
         walllist = []
         wallups = []    
@@ -117,6 +117,6 @@ if __name__ == "__main__":
                 #Will add the option to add multis and subreddits
         
         reddit = setUp('ultramarinebot', 'DingDong', 'm8WwEuPMiFFK2Q', 'N01fSGdUzH-m6RgHW3-u0GHUXSY')
-        ChangeBack(temp_limit, temp_proirind, reddit)
+        changeBack(temp_limit, temp_proirind, reddit)
 
 
