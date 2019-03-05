@@ -25,13 +25,16 @@ def setUp(usrnm, passwd, cl_id, cl_sc):
 
 	return reddit
 
+def swapper(str, ind, rep_ch):
+	return (str[0:ind] + rep_ch + str[ind+1:len(str)])
+
 def nameCorrectorLinux(name):
 	#   Corrects file name in line with ubuntu file naming rules
 	if len(name) > 255:
 		name = name[0:254]
 	for i in range(0,len(name)-1):
 		if name[i] == '/':
-			name[i] = '-'
+			swapper(name, i, '-')
 	return name
 
 def nameCorrectorWindows(name):
@@ -40,17 +43,17 @@ def nameCorrectorWindows(name):
 		name = name[0:254]
 	for i in range(0, len(name)-1):
 		if name[i] in ['/', '\\']:
-			name[i] = '-'
+			swapper(name, i, '-')
 		if name[i] == '<':
-			name[i] = '['
+			swapper(name, i, '[')
 		if name[i] == '>':
-			name[i] = ']'
+			swapper(name, i, ']')
 		if name[i] in [':', '|', '?']:
-			name[i] = '_'
+			swapper(name, i, '_') 
 		if name[i] == '\"':
-			name[i] = '\''
+			swapper(name, i, '\'')
 		if name[i] == '*':
-			name[i] = 'x'
+			swapper(name, i, 'x')
 	return name
 
 def changeBack(lim , proirind, reddit):
@@ -90,6 +93,11 @@ def changeBack(lim , proirind, reddit):
 		#   Downloading the file
 		print('Downloading... ' + name)
 		file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+		
+		#	Making the directory if it doesn't already exist
+		if not os.path.exists(file_path):
+			os.makedirs(file_path)
+
 		urllib.urlretrieve(urltemp,filename = (file_path + name))
 		print('Download Complete.\nSetting this as Wallpaper...')
 
@@ -109,13 +117,18 @@ def changeBack(lim , proirind, reddit):
 		#   Downloading the file
 		print('Downloading...', name)
 		file_path = os.path.expanduser('~\\Pictures') +'\\Wallpapers\\'
+
+		#	Making the directory if it doesn't already exist
+		if not os.path.exists(file_path):
+			os.makedirs(file_path)
+
 		urllib.urlretrieve(urltemp,filename = (file_path + name))
 		print('Download Complete.\nSetting this as Wallpaper...')
 
 		#   This part adds back ground support for Windows machines
 		SPI_SETDESKWALLPAPER = 20
 		SPIF_UPDATEINFILE = 1
-		command = file_path + '\"' + name+ '\"'
+		command = file_path + name
 		ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, command , SPIF_UPDATEINFILE)
 		print('Wallpaper Set.')
 
@@ -127,6 +140,11 @@ def changeBack(lim , proirind, reddit):
 		#	Downloading th file
 		print('Downloading... ' + name)
 		file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+
+		#	Making the directory if it doesn't already exist
+		if not os.path.exists(file_path):
+			os.makedirs(file_path)
+		
 		urllib.urlretrieve(urltemp,filename = (file_path + name))
 		print('Download Complete.\nSetting this as Wallpaper...')
 
@@ -137,7 +155,32 @@ def changeBack(lim , proirind, reddit):
 		if status == 0:
 			print('Wallpaper Set')
 		else:
-			print('Some error occured. Please Try Again; if the issue persists, pray')    
+			print('Some error occured. Please Try Again; if the issue persists, pray')
+
+	#	Checking for the target machine to be Cinnamon
+	if os.environ.get("DESKTOP_SESSION") == "cinnamon":
+		#   Correcting the file names
+		name = nameCorrectorLinux(name)
+
+		#	Downloading th file
+		print('Downloading... ' + name)
+		file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+
+		#	Making the directory if it doesn't already exist
+		if not os.path.exists(file_path):
+			os.makedirs(file_path)
+		
+		urllib.urlretrieve(urltemp,filename = (file_path + name))
+		print('Download Complete.\nSetting this as Wallpaper...')
+
+		#   This part adds background support for Cinnamon machines
+		file_path += '\"' + name+ '\"'
+		command = 'gsettings set org.cinnamon.desktop.background picture-uri  file://' + file_path
+		status, output = commands.getstatusoutput(command)
+		if status == 0:
+			print('Wallpaper Set')
+		else:
+			print('Some error occured. Please Try Again; if the issue persists, pray')     
 	
 	
 
@@ -169,5 +212,3 @@ if __name__ == "__main__":
 	
 	reddit = setUp('ultramarinebot', 'DingDong', 'm8WwEuPMiFFK2Q', 'N01fSGdUzH-m6RgHW3-u0GHUXSY')
 	changeBack(temp_limit, temp_proirind, reddit)
-
-
