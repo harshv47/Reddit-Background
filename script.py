@@ -28,16 +28,17 @@ def setUp(usrnm, passwd, cl_id, cl_sc):
 def firstTimeLinux():
 	file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
 	file = open(file_path + "_rb.dat", "w")
-	file.write("Ran")
+	file.write("Ran" + "\n")
+	print('Write every input inside quotes')
 	client_id = input('Please enter your Client ID:\t')
 	client_secret = input('Please enter your Client Secret:\t')
-	user_agent = input('Please enter your user_agent name:\t')
 	username = input('Please enter your Reddit Username:\t')
 	password = input('Please enter your Reddit Password:\t')
-	file.write(client_id)
-	file.write(client_secret)
-	file.write(username)
-	file.write(password)
+	file.write(client_id + "\n")
+	file.write(client_secret + "\n")
+	file.write(username + "\n")
+	file.write(password + "\n")
+	file.close()
 
 def swapper(str, ind, rep_ch):
 	return (str[0:ind] + rep_ch + str[ind+1:len(str)])
@@ -75,7 +76,7 @@ def changeBack(lim , proirind, reddit):
 	walllist = []
 	wallups = []    
 	wallsubs = ['EarthPorn', 'SpacePorn']
-	
+	reddit.read_only = True
 	for wallsub in wallsubs:
 		  subreddit = reddit.subreddit(wallsub)
 		  for submission in subreddit.hot(limit = lim):          
@@ -224,17 +225,30 @@ if __name__ == "__main__":
 					temp_proirind = random.randrange(1, temp_limit, 1)
 			#Will add the option to add multis and subreddtis
 	
-	file = '/home/' + os.environ.get('USER') +'/Wallpapers/' + '_rb.dat'
-	if ospath.isfile(file):
+	file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+	client_id = ''
+	client_secret = ''
+	username = ''
+	password = ''
+	if os.path.isfile(file_path + "_rb.dat"):
 		#	If the file exists, meaning it has already been set up
-		client_id = file.readline(2)
-		client_secret = file.readline(3)
-		username = file.readline(4)
-		password = file.readline(5)
+		file = open(file_path + "_rb.dat", "r")
+		lines = file.readlines()
+		client_id = lines[1].strip()
+		client_secret = lines[2].strip()
+		username = lines[3].strip()
+		password = lines[4].strip()
+		file.close()
+
+		#	Running the commands:
+		reddit = setUp(username, password, client_id, client_secret)
+		changeBack(temp_limit, temp_proirind, reddit)
 	else:
+		print("This is an Wallpaper Changer Application that uses Reddit!\n")
+		print("To use this application you require a reddit account, you can create one at https://www.reddit.com/register")
+		print("or if you already have one, log in at https://.reddit.com/login and add \"reddit_back\" as a script.")
 		if os.environ.get("DESKTOP_SESSION") in ["ubuntu", "gnome", "unity", "mate", "cinnamon"]:
 			firstTimeLinux()
 		print('Reddit-Background is all Set up, run it again and enjoy!')
 
-	reddit = setUp(username, password, client_id, client_secret)
-	changeBack(temp_limit, temp_proirind, reddit)
+	
