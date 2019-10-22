@@ -1,10 +1,10 @@
 import praw
-import urllib
+import urllib.request
 import ctypes
 import sys
 import random
 import os
-import commands
+import subprocess
 
 def printHelp():
 	print('--------------------------------------------------------------------')
@@ -26,7 +26,7 @@ def setUp(usrnm, passwd, cl_id, cl_sc):
 	return reddit
 
 def firstTimeLinux():
-	file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+	file_path = '/home/' + os.environ.get('USER') +'/Pictures/'
 	file = open(file_path + "_rb.dat", "w")
 	file.write("Ran" + "\n")
 	print('Write every input inside quotes')
@@ -75,7 +75,7 @@ def changeBack(lim , proirind, reddit):
 	
 	walllist = []
 	wallups = []    
-	wallsubs = ['EarthPorn', 'SpacePorn']
+	wallsubs = ['ultrahdwallpapers', 'WQHD_Wallpaper']
 	reddit.read_only = True
 	for wallsub in wallsubs:
 		  subreddit = reddit.subreddit(wallsub)
@@ -107,18 +107,18 @@ def changeBack(lim , proirind, reddit):
 
 		#   Downloading the file
 		print('Downloading... ' + name)
-		file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+		file_path = '/home/' + os.environ.get('USER') +'/Pictures/'
 		
 		#	Making the directory if it doesn't already exist
 		if not os.path.exists(file_path):
 			os.makedirs(file_path)
 
-		urllib.urlretrieve(urltemp,filename = (file_path + name))
+		urllib.request.urlretrieve(urltemp,filename = (file_path + name))
 		print('Download Complete.\nSetting this as Wallpaper...')
 
 		#   This part adds background support for ubuntu machines
 		command = 'gsettings set org.gnome.desktop.background picture-uri file://' + file_path + '\"' + name+ '\"'
-		status, output = commands.getstatusoutput(command)
+		status, output = subprocess.getstatusoutput(command)
 		if status == 0:
 			print('Wallpaper Set')
 		else:
@@ -131,13 +131,13 @@ def changeBack(lim , proirind, reddit):
 
 		#   Downloading the file
 		print('Downloading...', name)
-		file_path = os.path.expanduser('~\\Pictures') +'\\Wallpapers\\'
+		file_path = os.path.expanduser('~\\Pictures') +'\\Pictures\\'
 
 		#	Making the directory if it doesn't already exist
 		if not os.path.exists(file_path):
 			os.makedirs(file_path)
 
-		urllib.urlretrieve(urltemp,filename = (file_path + name))
+		urllib.request.urlretrieve(urltemp,filename = (file_path + name))
 		print('Download Complete.\nSetting this as Wallpaper...')
 
 		#   This part adds back ground support for Windows machines
@@ -154,19 +154,19 @@ def changeBack(lim , proirind, reddit):
 
 		#	Downloading th file
 		print('Downloading... ' + name)
-		file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+		file_path = '/home/' + os.environ.get('USER') +'/Pictures/'
 
 		#	Making the directory if it doesn't already exist
 		if not os.path.exists(file_path):
 			os.makedirs(file_path)
 		
-		urllib.urlretrieve(urltemp,filename = (file_path + name))
+		urllib.request.urlretrieve(urltemp,filename = (file_path + name))
 		print('Download Complete.\nSetting this as Wallpaper...')
 
 		#   This part adds background support for Mate machines
 		file_path += '\"' + name+ '\"'
 		command = 'mateconftool-2 -t string -s /desktop/mate/background/picture_filename ls' + file_path + ' | shuf -n1' 
-		status, output = commands.getstatusoutput(command)
+		status, output = subprocess.getstatusoutput(command)
 		if status == 0:
 			print('Wallpaper Set')
 		else:
@@ -179,19 +179,19 @@ def changeBack(lim , proirind, reddit):
 
 		#	Downloading th file
 		print('Downloading... ' + name)
-		file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+		file_path = '/home/' + os.environ.get('USER') +'/Pictures/'
 
 		#	Making the directory if it doesn't already exist
 		if not os.path.exists(file_path):
 			os.makedirs(file_path)
 		
-		urllib.urlretrieve(urltemp,filename = (file_path + name))
+		urllib.request.urlretrieve(urltemp,filename = (file_path + name))
 		print('Download Complete.\nSetting this as Wallpaper...')
 
 		#   This part adds background support for Cinnamon machines
 		file_path += '\"' + name+ '\"'
 		command = 'gsettings set org.cinnamon.desktop.background picture-uri  file://' + file_path
-		status, output = commands.getstatusoutput(command)
+		status, output = subprocess.getstatusoutput(command)
 		if status == 0:
 			print('Wallpaper Set')
 		else:
@@ -225,7 +225,7 @@ if __name__ == "__main__":
 					temp_proirind = random.randrange(1, temp_limit, 1)
 			#Will add the option to add multis and subreddtis
 	
-	file_path = '/home/' + os.environ.get('USER') +'/Wallpapers/'
+	file_path = '/home/' + os.environ.get('USER') +'/Pictures/'
 	client_id = ''
 	client_secret = ''
 	username = ''
